@@ -10,22 +10,13 @@ import plotly.graph_objects as go
 def sentGraph(filepath):
     data = pandas.read_csv(filepath)
     
-    #data['time'] = pandas.DatetimeIndex(data.time)
-    
-    #data = data.set_index(['time'])
-    '''
-    times = pandas.DatetimeIndex(data.time)
-    
-    grouped = data.groupby(times.minute)['sentiment'].mean()
-    '''
-    
     fig = go.Figure(data=go.Scatter(x=data['time'],
                                     y=data['sentiment'],
                                     mode='markers',
                                     marker_color=data['sentiment'],
                                     text=data['text'],
                                     name='tweet'
-                                    )) # hover text goes here
+                                    ))
     
     avg_df = data.drop(['id', 'text'], axis=1)
     avg_df.time = pandas.to_datetime(avg_df.time)
@@ -36,10 +27,6 @@ def sentGraph(filepath):
                              name='Avg Sentiment / 1Min',
                              line=dict(color='blue', width=2)
                              ))
-    '''
-    min_int = data.sentiment.resample('Min')
-    fig.add_trace(x=min_int['time'], y=min_int['sentiment'])
-    '''
     
     fig.update_layout(title='Coronavirus Twitter Sentiment Analysis')
     fig.show()
